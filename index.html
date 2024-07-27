@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CS416 Narrative Visualization Project: Rohit Mukherjee</title>
+    <title>CS416 Narrative Visualization Project: Climate Change</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="scripts/app.js"></script>
@@ -20,48 +20,39 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles/app.css">
 </head>
-<body onload='renderFirstChart()'>
+<body>
 <div class="container">
     <div id="index-slide">
-        <h2>Have you wondered what the labour productivity and work hours look like in different countries?</h2>
+        <h2>Exploring the Impact of Climate Change</h2>
         <div class="jumbotron">
             <div class="row">
                 <div class="col-lg-4 col-sm-3 col-xs-6">
-                    <h3>Myanmar</h3>
-                    <img src="images/myanmar_flag.png" class="img-circle" alt="Myanmar Flag" width="200" height="180">
+                    <h3>Global Temperatures</h3>
+                    <img src="images/global_temperature.png" class="img-circle" alt="Global Temperature" width="200" height="180">
                 </div>
                 <div class="col-lg-4 col-sm-3 col-xs-6">
-                    <h3>France</h3>
-                    <img src="images/france_flag.png" class="img-circle" alt="France Flag" width="200"
-                         height="180">
+                    <h3>Sea Level Rise</h3>
+                    <img src="images/sea_level_rise.png" class="img-circle" alt="Sea Level Rise" width="200" height="180">
                 </div>
                 <div class="col-lg-4 col-sm-3 col-xs-6">
-                    <h3>USA</h3>
-                    <img src="images/usa_flag.png" class="img-circle" alt="USA Flag" width="200" height="180">
+                    <h3>CO2 Emissions</h3>
+                    <img src="images/co2_emissions.png" class="img-circle" alt="CO2 Emissions" width="200" height="180">
                 </div>
             </div>
 
             <ul>
-                <li class="font-size-lg mt-50"><span>&#128119;</span> For instance, countries like Myanmar have some of the lowest
-                    GDP per capita but highest working hours.
-                </li>
-                <li class="font-size-lg mt-30"><span>⚒️️</span> In Myanmar, the average worker puts in approximately 2400
-                    hours each year, nearly 900 more hours than in France (1,500 hours).
-                </li>
-                <li class="font-size-lg mt-30">😓</span> The extra 900
-                    hours for Myanmar workers means longer work days and far fewer holidays.
-                </li>
+                <li class="font-size-lg mt-50"><span>🌡️</span> The global temperature has been rising steadily, with recent years being the hottest on record.</li>
+                <li class="font-size-lg mt-30"><span>🌊</span> Sea levels are rising due to the melting of polar ice caps and glaciers, threatening coastal communities.</li>
+                <li class="font-size-lg mt-30"><span>🌍</span> CO2 emissions are at an all-time high, contributing significantly to global warming.</li>
             </ul>
             <h4 class="mt-50">
-
             </h4>
             <h4 class="mt-30">
-                This interactive slideshow compares the working hours between different countries
-                and the hours they work per year. We factor in data about the labour productivity in these
-                countries and also their GDP per capita growth over the years.
+                This interactive slideshow explores the key indicators of climate change, including global temperature anomalies, sea level rise, and CO2 emissions. 
+                By examining these trends, we can better understand the urgency of taking action to combat climate change.
             </h4>
             <div class="mt-30">
-                <em>Data Source: https://ourworldindata.org/</em>
+                <em>Data Source: https://data.giss.nasa.gov/gistemp/, https://tidesandcurrents.noaa.gov/, https://ourworldindata.org/co2-emissions</em>
             </div>
             <div class="mt-20">
                 <em>Tested on Chrome and Safari.</em>
