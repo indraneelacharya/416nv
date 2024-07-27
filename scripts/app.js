@@ -1,100 +1,72 @@
 // First Slide
+
 async function renderFirstChart() {
-    const margin = {top: 10, right: 20, bottom: 30, left: 50},
-        width = 1000 - margin.left - margin.right,
-        height = 800 - margin.top - margin.bottom;
-    const data = await d3.csv("https://rohitmukherjee.github.io/data/1-annual-working-hours-vs-gdp-per-capita-pwt.csv");
-    const year = 2015
-    const filteredData = data.filter(function (d) {
-        return d.year == year && d.total_population != "" && d.average_annual_hours_worked != "" && d.gdp_per_capita != "";
-    });
+    
+    const width = 928;
+    const height = 600;
+    const marginTop = 20;
+    const marginRight = 30;
+    const marginBottom = 30;
+    const marginLeft = 40;
+    const data = await d3.csvParse(await FileAttachment("temperatures.csv").text(), (d, i, columns) => {
+    for (let i = 1; i < 13; ++i) { // pivot longer
+      data.push({date: new Date(Date.UTC(d.Year, i - 1, 1)), value: +d[columns[i]]});
+    }});
+    
+    
+    const x = d3.scaleUtc()
+      .domain(d3.extent(data, d => d.date))
+      .range([marginLeft, width - marginRight]);
 
-    let svg = d3.select("#chart-1").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+  const y = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.value)).nice()
+      .range([height - marginBottom, marginTop]);
 
-    // Add X axis
-    const x = d3.scaleLinear()
-        .domain([1000, 70000])
-        .range([0, width]);
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickFormat(d => d + " $/yr"));
+  const max = d3.max(data, d => Math.abs(d.value));
 
-    // Add Y axis
-    const y = d3.scaleLinear()
-        .domain([1200, 2800])
-        .range([height, 0]);
-    svg.append("g")
-        .call(d3.axisLeft(y).tickFormat(d => d + " hr"));
+  // Create a symmetric diverging color scale.
+  const color = d3.scaleSequential()
+      .domain([max, -max])
+      .interpolator(d3.interpolateRdBu);
 
-    // Add a scale for bubble size
-    const z = getBubbleSizeScale()
+  const svg = d3.create("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto;");
 
-    // Add a scale for bubble color
-    const myColor = d3.scaleOrdinal()
-        .domain(getContinentKeys())
-        .range(d3.schemeSet2);
+  svg.append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x).ticks(width / 80))
+      .call(g => g.select(".domain").remove());
 
-    // -1- Create a tooltip div that is hidden by default:
-    const tooltip = d3.select("#slide-1")
-        .append("div")
-        .style("opacity", 0)
-        .attr("class", "tooltip")
-        .style("background-color", "black")
-        .style("border-radius", "5px")
-        .style("padding", "10")
-        .style("color", "white")
-        .style("width", "150px")
-        .style("height", "50px")
+  svg.append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y).ticks(null, "+"))
+      .call(g => g.select(".domain").remove())
+      .call(g => g.selectAll(".tick line")
+        .clone()
+          .attr("x2", width - marginRight - marginLeft)
+          .attr("stroke-opacity", d => d === 0 ? 1 : 0.1))
+      .call(g => g.append("text")
+          .attr("fill", "#000")
+          .attr("x", 5)
+          .attr("y", marginTop)
+          .attr("dy", "0.32em")
+          .attr("text-anchor", "start")
+          .attr("font-weight", "bold")
+          .text("Anomaly (°C)"));
 
-    // Add dots
-    svg.append('g')
-        .selectAll("scatterplot-dot")
-        .data(filteredData)
-        .enter()
-        .append("circle")
-        .attr("class", "bubbles")
-        .attr("cx", function (d) {
-            return x(Number(d.gdp_per_capita));
-        })
-        .attr("cy", function (d) {
-            return y(Number(d.average_annual_hours_worked));
-        })
-        .attr("id", function (d) {
-            return "bubble-" + d.code;
-        })
-        .attr("r", function (d) {
-            return z(Number(d.total_population));
-        })
-        .on("mouseover", function (event, d) {
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
-            tooltip.html(firstChartTooltipHTML(d));
-            tooltip.style("left", (event.pageX) + "px")
-                .style("top", (event.pageY - 28) + "px")
-        })
-        .on("mouseout", function (d) {
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0);
-        })
-        .style("fill", function (d) {
-            return myColor(d.continent);
-        });
-    renderLegend(svg, getContinentKeys(), width, myColor);
-    countryCodesToAnnotate().forEach(function (countryCode) {
-        for (let i = 0; i < filteredData.length; i++) {
-            if (filteredData[i].code === countryCode) {
-                const countryData = filteredData[i];
-                renderFirstChartAnnotations(countryData, x(Number(countryData.gdp_per_capita)), y(Number(countryData.average_annual_hours_worked)), margin);
-            }
-        }
-    })
+  svg.append("g")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.2)
+    .selectAll()
+    .data(data)
+    .join("circle")
+      .attr("cx", d => x(d.date))
+      .attr("cy", d => y(d.value))
+      .attr("fill", d => color(d.value))
+      .attr("r", 2.5);
 }
 
 function renderFirstChartAnnotations(d, x, y, margin) {
@@ -127,6 +99,135 @@ function renderFirstChartAnnotations(d, x, y, margin) {
         .attr("class", "annotation-group")
         .call(makeAnnotations)
 }
+
+// async function renderFirstChart() {
+//     const margin = {top: 10, right: 20, bottom: 30, left: 50},
+//         width = 1000 - margin.left - margin.right,
+//         height = 800 - margin.top - margin.bottom;
+//     const data = await d3.csv("https://rohitmukherjee.github.io/data/1-annual-working-hours-vs-gdp-per-capita-pwt.csv");
+//     const year = 2015
+//     const filteredData = data.filter(function (d) {
+//         return d.year == year && d.total_population != "" && d.average_annual_hours_worked != "" && d.gdp_per_capita != "";
+//     });
+
+//     let svg = d3.select("#chart-1").append("svg")
+//         .attr("width", width + margin.left + margin.right)
+//         .attr("height", height + margin.top + margin.bottom)
+//         .append("g")
+//         .attr("transform",
+//             "translate(" + margin.left + "," + margin.top + ")");
+
+//     // Add X axis
+//     const x = d3.scaleLinear()
+//         .domain([1000, 70000])
+//         .range([0, width]);
+//     svg.append("g")
+//         .attr("transform", "translate(0," + height + ")")
+//         .call(d3.axisBottom(x).tickFormat(d => d + " $/yr"));
+
+//     // Add Y axis
+//     const y = d3.scaleLinear()
+//         .domain([1200, 2800])
+//         .range([height, 0]);
+//     svg.append("g")
+//         .call(d3.axisLeft(y).tickFormat(d => d + " hr"));
+
+//     // Add a scale for bubble size
+//     const z = getBubbleSizeScale()
+
+//     // Add a scale for bubble color
+//     const myColor = d3.scaleOrdinal()
+//         .domain(getContinentKeys())
+//         .range(d3.schemeSet2);
+
+//     // -1- Create a tooltip div that is hidden by default:
+//     const tooltip = d3.select("#slide-1")
+//         .append("div")
+//         .style("opacity", 0)
+//         .attr("class", "tooltip")
+//         .style("background-color", "black")
+//         .style("border-radius", "5px")
+//         .style("padding", "10")
+//         .style("color", "white")
+//         .style("width", "150px")
+//         .style("height", "50px")
+
+//     // Add dots
+//     svg.append('g')
+//         .selectAll("scatterplot-dot")
+//         .data(filteredData)
+//         .enter()
+//         .append("circle")
+//         .attr("class", "bubbles")
+//         .attr("cx", function (d) {
+//             return x(Number(d.gdp_per_capita));
+//         })
+//         .attr("cy", function (d) {
+//             return y(Number(d.average_annual_hours_worked));
+//         })
+//         .attr("id", function (d) {
+//             return "bubble-" + d.code;
+//         })
+//         .attr("r", function (d) {
+//             return z(Number(d.total_population));
+//         })
+//         .on("mouseover", function (event, d) {
+//             tooltip.transition()
+//                 .duration(200)
+//                 .style("opacity", .9);
+//             tooltip.html(firstChartTooltipHTML(d));
+//             tooltip.style("left", (event.pageX) + "px")
+//                 .style("top", (event.pageY - 28) + "px")
+//         })
+//         .on("mouseout", function (d) {
+//             tooltip.transition()
+//                 .duration(500)
+//                 .style("opacity", 0);
+//         })
+//         .style("fill", function (d) {
+//             return myColor(d.continent);
+//         });
+//     renderLegend(svg, getContinentKeys(), width, myColor);
+//     countryCodesToAnnotate().forEach(function (countryCode) {
+//         for (let i = 0; i < filteredData.length; i++) {
+//             if (filteredData[i].code === countryCode) {
+//                 const countryData = filteredData[i];
+//                 renderFirstChartAnnotations(countryData, x(Number(countryData.gdp_per_capita)), y(Number(countryData.average_annual_hours_worked)), margin);
+//             }
+//         }
+//     })
+// }
+
+// function renderFirstChartAnnotations(d, x, y, margin) {
+//     const computedDX = d.entity == "France" ? -30 : 30;
+//     const computedDY = d.entity == "France" ? 30 : -30;
+//     const annotations = [
+//         {
+//             note: {
+//                 label: "$" + Math.round(d.gdp_per_capita) + "/year, " + Math.round(d.average_annual_hours_worked) + " hrs/yr",
+//                 lineType: "none",
+//                 bgPadding: {"top": 15, "left": 10, "right": 10, "bottom": 10},
+//                 title: d.entity,
+//                 orientation: "leftRight",
+//                 "align": "middle"
+//             },
+//             type: d3.annotationCallout,
+//             subject: {radius: 30},
+//             x: x,
+//             y: y,
+//             dx: computedDX,
+//             dy: computedDY
+//         },
+//     ];
+//     const makeAnnotations = d3.annotation().annotations(annotations);
+
+//     d3.select("svg")
+//         .append("g")
+//         .attr("transform",
+//             "translate(" + margin.left + "," + margin.top + ")")
+//         .attr("class", "annotation-group")
+//         .call(makeAnnotations)
+// }
 
 function renderSecondChartAnnotations(d, x, y, margin) {
     const computedDX = d.entity == "France" ? -30 : 30;
