@@ -1,106 +1,73 @@
-charts.chart1 = function() {
-  // initialise layout variables
-  const margin = {top: 50, right: 20, bottom: 50, left: 60};
-  const width = 600;
-  const height = 400;
+charts.chart1 = async function() {
+  // Initialise layout variables
+  const width = 928;
+  const height = 600;
+  const marginTop = 20;
+  const marginRight = 30;
+  const marginBottom = 30;
+  const marginLeft = 40;
 
-  const parseDateTime = d3.timeParse("%B %d, %Y");
+  // Parse date and value from the CSV data
+  const data = await d3.csv('data/temperatures.csv', d3.autoType);
 
-  // initialise charts
-  const svg = d3.select('#svg1')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
-      .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+  // Create scales
+  const x = d3.scaleUtc()
+      .domain(d3.extent(data, d => d.date))
+      .range([marginLeft, width - marginRight]);
 
-  // get data
-  const file = 'data/NetflixOriginals.json';
-  d3.cachedJson(file, 'chart1', function(data) {
-    data.forEach(function(d) {
-      d.date = parseDateTime(d.Premiere);
-    });
-    data = data.filter(d => d.date != null);
-    const dataGroupedByYear = Array.from(d3.group(data, d => d.date.getFullYear()));
-    const finalData = dataGroupedByYear.map(
-        function (item) {
-          return {
-            year: item[0],
-            numOriginals: item[1].length
-          };
-        }
-    ).sort((a, b) => (a.year > b.year) ? 1 : -1);
+  const y = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.value)).nice()
+      .range([height - marginBottom, marginTop]);
 
-    draw(finalData);
-  });
+  const max = d3.max(data, d => Math.abs(d.value));
 
-  function draw(data) {
-    // X axis
-    const x = d3.scaleBand()
-        .range([0, width])
-        .domain(data.map(function (d) {
-          return d.year;
-        }))
-        .padding(0.2);
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("transform", "translate(-10,0)rotate(-45)")
-        .style("text-anchor", "end");
+  // Create a symmetric diverging color scale
+  const color = d3.scaleSequential()
+      .domain([max, -max])
+      .interpolator(d3.interpolateRdBu);
 
-    // Add Y axis
-    const y = d3.scaleLinear()
-        .domain([0, 200])
-        .range([height, 0]);
-    svg.append("g")
-        .call(d3.axisLeft(y));
+  // Create SVG container
+  const svg = d3.select("#svg1")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto;");
 
-    // Bars
-    svg.selectAll("mybar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("x", function(d) { return x(d.year); })
-        .attr("y", function(d) { return y(d.numOriginals); })
-        .attr("width", x.bandwidth())
-        .attr("height", function(d) { return height - y(d.numOriginals); })
-        .attr("fill", "#69b3a2")
+  // Add X axis
+  svg.append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x).ticks(width / 80))
+      .call(g => g.select(".domain").remove());
 
-    // Features of the annotation
-    const annotations = [
-      {
-        note: {
-          label: "Starts producing"
-        },
-        connector: {
-          end: "arrow"
-        },
-        type: d3.annotationLabel,
-        x: 125,
-        y: 450,
-        dx: 0,
-        dy: -25
-      },
-      {
-        note: {
-          label: "Peak so far"
-        },
-        connector: {
-          end: "arrow"
-        },
-        type: d3.annotationLabel,
-        x: 545,
-        y: 85,
-        dx: 0,
-        dy: -25
-      }
-    ]
+  // Add Y axis
+  svg.append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y).ticks(null, "+"))
+      .call(g => g.select(".domain").remove())
+      .call(g => g.selectAll(".tick line")
+        .clone()
+          .attr("x2", width - marginRight - marginLeft)
+          .attr("stroke-opacity", d => d === 0 ? 1 : 0.1))
+      .call(g => g.append("text")
+          .attr("fill", "#000")
+          .attr("x", 5)
+          .attr("y", marginTop)
+          .attr("dy", "0.32em")
+          .attr("text-anchor", "start")
+          .attr("font-weight", "bold")
+          .text("Anomaly (°C)"));
 
-    // Add annotation to the chart
-    const makeAnnotations = d3.annotation()
-        .annotations(annotations)
-    d3.select("#svg1")
-        .append("g")
-        .call(makeAnnotations)
-  }
-}
+  // Add data points
+  svg.append("g")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.2)
+    .selectAll("circle")
+    .data(data)
+    .join("circle")
+      .attr("cx", d => x(d.date))
+      .attr("cy", d => y(d.value))
+      .attr("fill", d => color(d.value))
+      .attr("r", 2.5);
+
+  return svg.node();
+};
