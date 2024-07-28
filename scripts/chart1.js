@@ -1,31 +1,26 @@
 document.addEventListener("DOMContentLoaded", async function() {
-    console.log("Starting:");
-
-    const data =  await d3.csv("data/temperatures.csv");
-    const parseTime = d3.timeParse("%Y-%m");
+    const data = [];
+    
     // Load the data from the CSV file
-    // await d3.csv("data/temperatures.csv", function(d, i, columns) {
-    //     for (let i = 1; i < 13; ++i) { // pivot longer
-    //         data.push({date: new Date(Date.UTC(d.Year, i - 1, 1)), value: +d[columns[i]]});
-    //     }
-    // });
+    await d3.csv("data/temperatures.csv", function(d, i, columns) {
+        for (let i = 1; i < 13; ++i) { // pivot longer
+            data.push({date: new Date(Date.UTC(d.Year, i - 1, 1)), value: +d[columns[i]]});
+        }
+    });
 
     console.log("Data loaded:", data);
 
     const width = 928;
     const height = 600;
-    const marginTop = 20;
-    const marginRight = 30;
-    const marginBottom = 30;
-    const marginLeft = 40;
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
     const x = d3.scaleUtc()
         .domain(d3.extent(data, d => d.date))
-        .range([marginLeft, width - marginRight]);
+        .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
         .domain(d3.extent(data, d => d.value)).nice()
-        .range([height - marginBottom, marginTop]);
+        .range([height - margin.bottom, margin.top]);
 
     const max = d3.max(data, d => Math.abs(d.value));
 
@@ -37,30 +32,31 @@ document.addEventListener("DOMContentLoaded", async function() {
     const svg = d3.select("#chart-container").append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("viewBox", [0, 0, width, height])
-        .attr("style", "max-width: 100%; height: auto;");
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .style("display", "block")
+        .style("margin", "0 auto");
 
     console.log("SVG element created");
 
     svg.append("g")
-        .attr("transform", `translate(0,${height - marginBottom})`)
+        .attr("transform", `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(x).ticks(width / 80))
         .call(g => g.select(".domain").remove());
 
     console.log("X axis created");
 
     svg.append("g")
-        .attr("transform", `translate(${marginLeft},0)`)
+        .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y).ticks(null, "+"))
         .call(g => g.select(".domain").remove())
         .call(g => g.selectAll(".tick line")
             .clone()
-            .attr("x2", width - marginRight - marginLeft)
+            .attr("x2", width - margin.left - margin.right)
             .attr("stroke-opacity", d => d === 0 ? 1 : 0.1))
         .call(g => g.append("text")
             .attr("fill", "#000")
             .attr("x", 5)
-            .attr("y", marginTop)
+            .attr("y", margin.top)
             .attr("dy", "0.32em")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
@@ -71,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     svg.append("g")
         .attr("stroke", "#000")
         .attr("stroke-opacity", 0.2)
-        .selectAll()
+        .selectAll("circle")
         .data(data)
         .join("circle")
         .attr("cx", d => x(d.date))
