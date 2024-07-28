@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
 
-    console.log("Data loaded:", data);
+    console.log("Data loaded:", data[0]);
 
     const width = 928;
     const height = 600;
