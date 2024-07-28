@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    
     const width = 960;
     const height = 500;
 
