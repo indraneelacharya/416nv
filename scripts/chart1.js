@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
 
+    console.log("Data loaded:", data);
+
     const width = 928;
     const height = 600;
     const marginTop = 20;
@@ -37,10 +39,14 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("viewBox", [0, 0, width, height])
         .attr("style", "max-width: 100%; height: auto;");
 
+    console.log("SVG element created");
+
     svg.append("g")
         .attr("transform", `translate(0,${height - marginBottom})`)
         .call(d3.axisBottom(x).ticks(width / 80))
         .call(g => g.select(".domain").remove());
+
+    console.log("X axis created");
 
     svg.append("g")
         .attr("transform", `translate(${marginLeft},0)`)
@@ -59,6 +65,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             .attr("font-weight", "bold")
             .text("Anomaly (°C)"));
 
+    console.log("Y axis created");
+
     svg.append("g")
         .attr("stroke", "#000")
         .attr("stroke-opacity", 0.2)
@@ -69,4 +77,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("cy", d => y(d.value))
         .attr("fill", d => color(d.value))
         .attr("r", 2.5);
+
+    console.log("Data points plotted");
 });
