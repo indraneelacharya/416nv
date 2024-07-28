@@ -53,16 +53,14 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Y axis created");
 
-    const r = d => d.delta >= 0 ? 0 : 180;
-
     svg.append("g")
         .attr("stroke", "#000")
-        .attr("stroke-opacity", 0.2)
+        .attr("stroke-opacity", 0.5)
         .selectAll("path")
         .data(data)
         .join("path")
-        .attr("d", d3.symbol().type(d3.symbolTriangle).size(50))
-        .attr("transform", d => `translate(${x(d.year)},${y(d.mean)}) rotate(${r(d)})`)
+        .attr("d", triangle)
+        .attr("transform", d => `translate(${x(d.year)},${y(d.mean)})`)
         .attr("fill", d => color(d.mean));
 
     console.log("Data points plotted");
