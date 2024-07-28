@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
     const x = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.year+ d.month / 12))
+        .domain(d3.extent(data, d => d.year + d.month / 12))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
@@ -61,8 +61,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         .selectAll("path")
         .data(data)
         .join("path")
-        .attr("d", d3.symbol().type(d3.symbolTriangle).size(50));
-        .attr("transform", d => `translate(${x(d.year + d.month / 12)},${y(d.meanSeaLevel)})${d.delta >= 0 ? '' : ' rotate(180)'}`)
+        .attr("d", triangle)
+        .attr("transform", d => `translate(${x(d.year + d.month / 12)},${y(d.meanSeaLevel)})`)
         .attr("fill", d => color(d.meanSeaLevel));
 
     console.log("Data points plotted");
