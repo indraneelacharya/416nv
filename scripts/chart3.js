@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Y axis created");
 
-    const triangleUp = d3.symbol().type(d3.symbolTriangle).size(50);
+    const r = d => d.delta >= 0 ? 0 : 180;
 
     svg.append("g")
         .attr("stroke", "#000")
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .data(data)
         .join("path")
         .attr("d", d3.symbol().type(d3.symbolTriangle).size(50))
-        .attr("transform", d => `translate(${x(d.year)},${y(d.mean)})${d.delta >= 0 ? '' : ' rotate(180)'}`)
+        .attr("transform", d => `translate(${x(d.year)},${y(d.mean)}) rotate(${r(d)})`)
         .attr("fill", d => color(d.mean));
 
     console.log("Data points plotted");
