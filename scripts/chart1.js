@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function() {
     console.log("Starting:");
 
-    const data = [];
+    const data =  await d3.csv("data/temperatures.csv";
     const parseTime = d3.timeParse("%Y-%m");
     // Load the data from the CSV file
-    await d3.csv("data/temperatures.csv", function(d, i, columns) {
-        for (let i = 1; i < 13; ++i) { // pivot longer
-            data.push({date: new Date(Date.UTC(d.Year, i - 1, 1)), value: +d[columns[i]]});
-        }
-    });
+    // await d3.csv("data/temperatures.csv", function(d, i, columns) {
+    //     for (let i = 1; i < 13; ++i) { // pivot longer
+    //         data.push({date: new Date(Date.UTC(d.Year, i - 1, 1)), value: +d[columns[i]]});
+    //     }
+    // });
 
     console.log("Data loaded:", data);
 
