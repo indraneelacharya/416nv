@@ -15,4 +15,5 @@ document.addEventListener("DOMContentLoaded", function() {
     svg.append("polygon")
         .attr("points", points.map(p => `${p.x},${p.y}`).join(" "))
         .style("fill", "red");
+    
 });
