@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .range([height - margin.bottom, margin.top]);
 
     const color = d3.scaleSequential(d3.interpolateRdBu)
-        .domain(d3.extent(data, d => -d.avgAnomaly));
+        .domain(d3.extent(data, d => d.avgAnomaly));
 
     const svg = d3.select("#chart-container").append("svg")
         .attr("width", width)
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .join("circle")
         .attr("cx", d => x(d.year))
         .attr("cy", d => y(d.avgAnomaly))
-        .attr("fill", d => color(d.avgAnomaly))
+        .attr("fill", d => color(-d.avgAnomaly))
         .attr("r", d => Math.abs(5));
 
     console.log("Data points plotted");
