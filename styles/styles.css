@@ -9,8 +9,9 @@ body {
 }
 
 #chart-container {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    max-width: 960px;
+    height: auto;
     background: #fff;
     border: 1px solid #ccc;
     padding: 20px;
