@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", async function() {
     const data = [];
-    
     // Load the data from the CSV file
     await d3.csv("data/co2_levels.csv", function(d) {
         data.push({
             year: +d.year,
-            mean: +d.mean,
+            meanSeaLevel: +d.mean,
             delta: +d.delta
         });
     });
@@ -21,13 +20,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.mean)).nice()
+        .domain(d3.extent(data, d => d.meanSeaLevel)).nice()
         .range([height - margin.bottom, margin.top]);
 
-    const meanCO2LevelExtent = d3.extent(data, d => d.mean);
+    const meanSeaLevelExtent = d3.extent(data, d => d.meanSeaLevel);
 
     const color = d3.scaleDiverging()
-        .domain([meanCO2LevelExtent[1], 0, meanCO2LevelExtent[0]])
+        .domain([meanSeaLevelExtent[1], 0, meanSeaLevelExtent[0]])
         .interpolator(d3.interpolateRdBu);
 
     const svg = d3.select("#chart-container").append("svg")
@@ -53,6 +52,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Y axis created");
 
+    const triangle = d3.symbol().type(d3.symbolTriangle).size(50);
+    const r = d => d.delta >= 0 ? 0 : 180;
     svg.append("g")
         .attr("stroke", "#000")
         .attr("stroke-opacity", 0.5)
@@ -60,8 +61,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         .data(data)
         .join("path")
         .attr("d", triangle)
-        .attr("transform", d => `translate(${x(d.year)},${y(d.mean)})`)
-        .attr("fill", d => color(d.mean));
+        .attr("transform", d => `translate(${x(d.year)},${y(d.meanSeaLevel)}) rotate(${r(d)})`)
+        .attr("fill", d => color(d.meanSeaLevel));
 
     console.log("Data points plotted");
 });
