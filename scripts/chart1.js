@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function() {
     console.log("Starting:");
 
-    const data =  await d3.csv("data/temperatures.csv";
+    const data =  await d3.csv("data/temperatures.csv");
     const parseTime = d3.timeParse("%Y-%m");
     // Load the data from the CSV file
     // await d3.csv("data/temperatures.csv", function(d, i, columns) {
