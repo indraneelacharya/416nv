@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    
     const width = 960;
     const height = 500;
 
@@ -6,13 +7,9 @@ document.addEventListener("DOMContentLoaded", function() {
         .attr("width", width)
         .attr("height", height);
 
-    const points = [
-        { x: width / 2, y: height / 2 - 50 },
-        { x: width / 2 - 50, y: height / 2 + 50 },
-        { x: width / 2 + 50, y: height / 2 + 50 }
-    ];
-
-    svg.append("polygon")
-        .attr("points", points.map(p => `${p.x},${p.y}`).join(" "))
-        .style("fill", "red");
+    svg.append("circle")
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .attr("r", 50)
+        .style("fill", "blue");
 });
