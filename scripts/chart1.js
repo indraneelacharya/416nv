@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const data = [];
     
     // Load the data from the CSV file
-    await d3.csv("data/temperatures.csv", function(d) {
+    await d3.csv("data/temperatures_shrunk.csv", function(d) {
         const avgAnomaly = +d.Means;
         data.push({year: +d.Year, avgAnomaly: avgAnomaly});
     });
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("cx", d => x(d.year))
         .attr("cy", d => y(d.avgAnomaly))
         .attr("fill", d => color(d.year))
-        .attr("r", d => Math.abs(d.avgAnomaly * 100));
+        .attr("r", d => Math.abs(d.avgAnomaly));
 
     console.log("Data points plotted");
 });
