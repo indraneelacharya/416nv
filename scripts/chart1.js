@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    console.log("Starting:");
+
     const data = [];
     const parseTime = d3.timeParse("%Y-%m");
-
     // Load the data from the CSV file
     await d3.csv("data/temperatures.csv", function(d, i, columns) {
         for (let i = 1; i < 13; ++i) { // pivot longer
