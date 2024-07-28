@@ -21,9 +21,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         .domain(d3.extent(data, d => d.avgAnomaly)).nice()
         .range([height - margin.bottom, margin.top]);
 
-    const color = d3.scaleSequential(d3.interpolateRdBu)
-        .domain(d3.extent(data, d => -d.avgAnomaly));
+    const avgAnomalyExtent = d3.extent(data, d => d.avgAnomaly);
 
+    const color = d3.scaleDiverging()
+        .domain([avgAnomalyExtent[1], 0, avgAnomalyExtent[0]])
+        .interpolator(d3.interpolateRdBu);
+    
     const svg = d3.select("#chart-container").append("svg")
         .attr("width", width)
         .attr("height", height)
