@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
     const x = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.year d.month / 12))
+        .domain(d3.extent(data, d => d.year+ d.month / 12))
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
