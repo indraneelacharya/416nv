@@ -36,6 +36,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         .style("display", "block")
         .style("margin", "0 auto");
 
+    svg.append("rect")
+        .attr("x", width / 2 - 50)
+        .attr("y", height / 2 - 50)
+        .attr("width", 100)
+        .attr("height", 100)
+        .style("fill", "green");
+
     console.log("SVG element created");
 
     svg.append("g")
