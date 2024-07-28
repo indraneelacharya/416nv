@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     console.log("Y axis created");
 
     const triangleUp = d3.symbol().type(d3.symbolTriangle).size(5);
-    const triangleDown = d3.symbol().type(d3.symbolTriangle).size(5).angle(Math.PI);
 
     svg.append("g")
         .attr("stroke", "#000")
@@ -64,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .join("path")
         .attr("d", d => d.delta >= 0 ? triangleUp() : triangleDown())
         .attr("transform", d => `translate(${x(d.year + d.month / 12)},${y(d.meanSeaLevel)})`)
+        .attr("transform", 'rotate(180)'); 
         .attr("fill", d => color(d.meanSeaLevel));
 
     console.log("Data points plotted");
