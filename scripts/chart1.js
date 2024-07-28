@@ -3,11 +3,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     
     // Load the data from the CSV file
     await d3.csv("data/temperatures.csv", function(d) {
-        const anomalies = [];
-        for (let i = 1; i <= 12; ++i) {
-            anomalies.push(+d[d3.keys(d)[i]]);
-        }
-        const avgAnomaly = d3.mean(anomalies);
+        const avgAnomaly = +d.Means;
         data.push({year: +d.Year, avgAnomaly: avgAnomaly});
     });
 
