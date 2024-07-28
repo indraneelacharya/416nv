@@ -35,14 +35,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("viewBox", `0 0 ${width} ${height}`)
         .style("display", "block")
         .style("margin", "0 auto");
-
-    svg.append("rect")
-        .attr("x", width / 2 - 50)
-        .attr("y", height / 2 - 50)
-        .attr("width", 100)
-        .attr("height", 100)
-        .style("fill", "green");
-
+    
     console.log("SVG element created");
 
     svg.append("g")
@@ -81,6 +74,14 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("cy", d => y(d.value))
         .attr("fill", d => color(d.value))
         .attr("r", 2.5);
+    
+    svg.append("rect")
+        .attr("x", width / 2 - 50)
+        .attr("y", height / 2 - 50)
+        .attr("width", 100)
+        .attr("height", 100)
+        .style("fill", "green");
+
 
     console.log("Data points plotted");
 });
