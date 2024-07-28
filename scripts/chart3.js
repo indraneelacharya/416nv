@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .range([margin.left, width - margin.right]);
 
     const y = d3.scaleLinear()
-        .domain([300,430)
+        .domain([300,430])
         .range([height - margin.bottom, margin.top]);
 
     const meanSeaLevelExtent = d3.extent(data, d => d.meanSeaLevel);
