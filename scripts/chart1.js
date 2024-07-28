@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("cx", d => x(d.year))
         .attr("cy", d => y(d.avgAnomaly))
         .attr("fill", d => color(d.avgAnomaly))
-        .attr("r", d => Math.abs(10));
+        .attr("r", d => Math.abs(30));
 
     console.log("Data points plotted");
 });
