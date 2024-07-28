@@ -9,9 +9,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Data loaded:", data);
 
-    const width = 1000;
-    const height = 600;
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const width = 960;
+    const height = 500;
 
     const x = d3.scaleLinear()
         .domain(d3.extent(data, d => d.year))
