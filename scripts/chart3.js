@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         .data(data)
         .join("path")
         .attr("d", triangle)
-        .attr("transform", d => `translate(${x(d.year + d.month / 12)},${y(d.meanSeaLevel)})${d.delta >= 0 ? '' : ' rotate(180)'}`)
+        .attr("transform", d => `translate(${x(d.year + d.month / 12)},${y(d.meanSeaLevel)})`)
         .attr("fill", d => color(d.meanSeaLevel));
 
     console.log("Data points plotted");
