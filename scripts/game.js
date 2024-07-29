@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     const temperatureMap = new Map(data.map(d => [d.CountryName, +d.Delta]));
 
     const colorScale = d3.scaleSequential(d3.interpolateRdBu)
-        .domain([d3.max(data, d => +d.Delta),0]); // Adjust the domain based on your data range
+        .domain([d3.max(data, d => +d.Delta),-5]); // Adjust the domain based on your data range
 
-    const initialColor = "#d9f0d3"; // Very light green
+    const initialColor = "#487748"; // Very green
 
     const world = await d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
 
