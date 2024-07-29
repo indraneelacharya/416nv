@@ -113,7 +113,20 @@ document.addEventListener("DOMContentLoaded", async function() {
         .join("path")
         .attr("d", triangle)
         .attr("transform", d => `translate(${x(d.year)},${y(d.mean)}) rotate(${r(d)})`)
-        .attr("fill", d => color(d.mean));
+        .attr("fill", d => color(d.mean))
+        .on("mouseover", function(event, d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(`Year: ${d.year}<br>Mean CO2 Level: ${d.mean}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
 
     console.log("Data points plotted");
 });
