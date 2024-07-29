@@ -105,8 +105,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             svg.append("foreignObject")
                 .attr("x", x(significant.year))
-                .attr("y", 250)  // Adjust y position to appear lower on the graph
-                .attr("width", 300)
+                .attr("y", function(d,i){return 250 +i*50;})  // Adjust y position to appear lower on the graph
+                .attr("width", 80)
                 .attr("height", 100)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .style("padding", "8px")
                 .style("border-radius", "4px")
                 .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
-                .style("transform", "rotate(270deg)")  // Rotate the tooltip
                 .style("transform-origin", "left top");
         }
     });
