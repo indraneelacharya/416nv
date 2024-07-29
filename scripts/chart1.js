@@ -114,7 +114,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .style("padding", "8px")
                 .style("border-radius", "4px")
                 .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
-                .style("opacity", 1);
+                .style("opacity", 1)
+                .style("font-size", "12px")
+                .style("z-index", -1); // Ensure permanent tooltips are behind the graphs
         }
     });
 
