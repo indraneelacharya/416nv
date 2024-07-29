@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "black")
+        .attr("stroke", "red")
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
@@ -95,11 +95,19 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .attr("stroke-width", 1)
                 .attr("stroke-dasharray", "4");
 
+            svg.append("circle")
+                .attr("cx", x(significant.year))
+                .attr("cy", y(yearData.avgAnomaly))
+                .attr("r", 4)
+                .attr("fill", color(yearData.avgAnomaly))
+                .attr("stroke", "#000")
+                .attr("stroke-opacity", 0.2);
+
             tooltip.append("div")
                 .attr("class", "permanent-tooltip")
                 .style("left", `${x(significant.year) + 5}px`)
                 .style("top", `${y(yearData.avgAnomaly) - 28}px`)
-                .html(`Year: ${significant.year}<br>${significant.summary}`)
+                .html(`Year: ${significant.year}<br>${significant.summary}<br>Avg Anomaly: ${yearData.avgAnomaly}`)
                 .style("position", "absolute")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
