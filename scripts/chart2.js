@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Data loaded:", data);
 
+    const description2 = d3.select("#chart-container").append("div")
+        .attr("id", "description2")
+        .style("text-align", "center")
+        .style("font-size", "16px")
+        .style("margin-bottom", "10px")
+        .html("<b>Sea Level Rise Over Time</b><br>This chart illustrates the changes in sea levels from 1856 to present, showing the mean sea level and the rate of change over time.");
+
+
     const significantYears = [
         { year: 1856, summary: "Eunice Newton Foote hypothesizes Greenhouse Effect." },
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
@@ -90,12 +98,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             svg.append("foreignObject")
                 .attr("x", x(significant.year))
-                .attr("y", 250)  // Adjust y position to appear lower on the graph
+                .attr("y", 100)  // Adjust y position to appear lower on the graph
                 .attr("width", 80)
                 .attr("height", 100)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
-                .html(`Year: ${significant.year}<br>${significant.summary}<br>Mean Sea Level: ${yearData.meanSeaLevel}`)
+                .html(`Year: ${significant.year}<br>${significant.summary}`)
                 .style("font-size", "9px")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
