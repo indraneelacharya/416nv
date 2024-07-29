@@ -1,17 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function() {
-    const description = d3.select("#my_dataviz")
-        .append("div")
-        .attr("id", "description")
-        .style("text-align", "center")
-        .style("font-size", "16px")
-        .style("margin-bottom", "10px")
-        .html("<b>Global Temperature Variation Game</b><br>This interactive map shows the temperature variations across different countries. Click on a country to see its temperature variation. The color will change to indicate the variation. Hover over a country for more details. Click on the country with the highest variation to end the game.");
-
     const width = 960;
     const height = 600;
 
     const svg = d3.select("#my_dataviz")
-        .append("svg")
         .attr("width", width)
         .attr("height", height);
 
@@ -93,6 +84,14 @@ document.addEventListener("DOMContentLoaded", async function() {
                 alert("Game Over! You clicked on Greenland. Curiously the most significant change in temperature has been in the countries and regions that are most North. This is because the glacial melt is most concentrated here.");
             }
         });
+
+    // Add description at the bottom
+    d3.select("#chart-container").append("div")
+        .attr("id", "description")
+        .style("text-align", "center")
+        .style("font-size", "16px")
+        .style("margin-top", "20px")
+        .html("<b>Global Temperature Variation Game</b><br>This interactive map shows the temperature variations across different countries. Click on a country to see its temperature variation. The color will change to indicate the variation. Hover over a country for more details. Click on the country with the highest variation to end the game.");
 
     console.log("Map plotted");
 });
