@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "red")
+        .attr("stroke", "black")
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
