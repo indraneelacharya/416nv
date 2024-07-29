@@ -9,6 +9,13 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Data loaded:", data);
 
+    const description1 = d3.select("#chart-container").append("div")
+        .attr("id", "description1")
+        .style("text-align", "center")
+        .style("font-size", "16px")
+        .style("margin-bottom", "10px")
+        .html("<b>Global Temperature Anomalies Over Time</b><br>This chart shows the average temperature anomalies from 1880 to present, indicating how temperatures have deviated from the historical average.");
+
     const significantYears = [
         { year: 1856, summary: "Eunice Newton Foote hypothesizes Greenhouse Effect." },
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
