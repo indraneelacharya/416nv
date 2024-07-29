@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .attr("x", x(significant.year))
                 .attr("y", 250)  // Adjust y position to appear lower on the graph
                 .attr("width", 300)
-                .attr("height", 200)
+                .attr("height", 100)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary} Avg Anomaly: ${yearData.avgAnomaly}`)
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .style("padding", "8px")
                 .style("border-radius", "4px")
                 .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
-                .style("transform", "rotate(-90deg)")  // Rotate the tooltip
+                .style("transform", "rotate(270deg)")  // Rotate the tooltip
                 .style("transform-origin", "left top");
         }
     });
