@@ -11,6 +11,17 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Data loaded:", data);
 
+    const description3 = d3.select("#chart-container").append("div")
+        .attr("id", "description3")
+        .style("text-align", "center")
+        .style("font-size", "16px")
+        .style("margin-bottom", "10px")
+        .html("<b>CO2 Emissions Over Time</b><br>This chart highlights the mean CO2 levels in the atmosphere from 1950 to present, showing the increase in CO2 concentrations over time.");
+
+    // ... rest of the code remains the same
+});
+
+
     const significantYears = [
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
         { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
