@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     console.log("Data loaded:", data);
 
     const significantYears = [
-        { year: 1958, summary: "Charles Keeling starts CO2 measurements at Mauna Loa." },
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
         { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
         { year: 1998, summary: "Michael Mann publishes 'hockey stick' climate graph." }
