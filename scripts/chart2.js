@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const significantYears = [
         { year: 1856, summary: "Eunice Newton Foote hypothesizes Greenhouse Effect." },
-        { year: 1958, summary: "Charles Keeling starts CO2 measurements at Mauna Loa." },
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
         { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
         { year: 1998, summary: "Michael Mann publishes 'hockey stick' climate graph." }
@@ -97,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary}<br>Mean Sea Level: ${yearData.meanSeaLevel}`)
-                .style("font-size", "12px")
+                .style("font-size", "9px")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
