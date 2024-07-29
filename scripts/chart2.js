@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Data loaded:", data);
 
+    const significantYears = [
+        { year: 1856, summary: "Eunice Newton Foote hypothesizes Greenhouse Effect." },
+        { year: 1958, summary: "Charles Keeling starts CO2 measurements at Mauna Loa." },
+        { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
+        { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
+        { year: 1998, summary: "Michael Mann publishes 'hockey stick' climate graph." }
+    ];
+
     const width = 960;
     const height = 500;
     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
@@ -54,6 +62,52 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const triangle = d3.symbol().type(d3.symbolTriangle).size(50);
     const r = d => d.delta >= 0 ? 0 : 180;
+
+    // Tooltip
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    // Draw significant year lines and permanent tooltips
+    significantYears.forEach(significant => {
+        const yearData = data.find(d => d.year === significant.year);
+        if (yearData) {
+            svg.append("line")
+                .attr("x1", x(significant.year))
+                .attr("x2", x(significant.year))
+                .attr("y1", margin.top)
+                .attr("y2", height - margin.bottom)
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "4");
+
+            svg.append("circle")
+                .attr("cx", x(significant.year))
+                .attr("cy", y(yearData.meanSeaLevel))
+                .attr("r", 4)
+                .attr("fill", color(yearData.meanSeaLevel))
+                .attr("stroke", "#000")
+                .attr("stroke-opacity", 0.2);
+
+            svg.append("foreignObject")
+                .attr("x", x(significant.year))
+                .attr("y", 250)  // Adjust y position to appear lower on the graph
+                .attr("width", 80)
+                .attr("height", 100)
+                .append("xhtml:div")
+                .attr("class", "permanent-tooltip")
+                .html(`Year: ${significant.year}<br>${significant.summary}<br>Mean Sea Level: ${yearData.meanSeaLevel}`)
+                .style("font-size", "12px")
+                .style("background", "white")
+                .style("border", "1px solid #ccc")
+                .style("padding", "8px")
+                .style("border-radius", "4px")
+                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
+                .style("transform", "rotate(-90deg)")  // Rotate the tooltip
+                .style("transform-origin", "left top");
+        }
+    });
+
     svg.append("g")
         .attr("stroke", "#000")
         .attr("stroke-opacity", 0.5)
