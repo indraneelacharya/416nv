@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             svg.append("foreignObject")
                 .attr("x", x(significant.year) + 5)
-                .attr("y", y(yearData.avgAnomaly) - 28)
+                .attr("y", height - margin.bottom - 50)  // Adjust y position to appear lower on the graph
                 .attr("width", 200)
                 .attr("height", 50)
                 .append("xhtml:div")
