@@ -105,13 +105,13 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             svg.append("foreignObject")
                 .attr("x", x(significant.year) + 5)
-                .attr("y", height - margin.bottom - 50)  // Adjust y position to appear lower on the graph
-                .attr("width", 200)
+                .attr("y", height - margin.bottom - 80)  // Adjust y position to appear lower on the graph
+                .attr("width", 150)
                 .attr("height", 50)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary}<br>Avg Anomaly: ${yearData.avgAnomaly}`)
-                .style("font-size", "12px")
+                .style("font-size", "9px")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
