@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 28) + "px");
         tooltip.select("#tooltip-country").text(country);
-        // tooltip.select("#tooltip-variation").text(variation);
+        tooltip.select("#tooltip-variation").text(variation);
     };
 
     const mouseLeave = function() {
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .attr("fill", tempVar != null ? colorScale(tempVar) : initialColor);
 
             if (country === "Greenland") {
-                alert("Game Over! You clicked on Greenland.");
+                alert("Game Over! You clicked on Greenland. Curiously the most significant change in temperature has been in the countries and regions that are most North. This is because the glacial melt is most concentrated here.");
             }
         });
 
