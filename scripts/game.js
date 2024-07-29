@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const path = d3.geoPath().projection(projection);
 
-    const temperatureData = await d3.csv("data/temperature_variations.csv");
-    const historicalData = await d3.csv("data/historical_temperatures.csv");
+    const temperatureData = await d3.csv("data/game.csv");
+    // const historicalData = await d3.csv("data/historical_temperatures.csv");
     const temperatureMap = new Map(temperatureData.map(d => [d.country, +d.temperature_variation]));
-    const historicalMap = new Map();
+    // const historicalMap = new Map();
 
     historicalData.forEach(d => {
         if (!historicalMap.has(d.country)) {
