@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             svg.append("foreignObject")
                 .attr("x", x(significant.year))
-                .attr("y", 100)  // Adjust y position to appear lower on the graph
+                .attr("y", 10)  // Adjust y position to appear lower on the graph
                 .attr("width", 80)
                 .attr("height", 100)
                 .append("xhtml:div")
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "red")
+        .attr("stroke", "black")
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
