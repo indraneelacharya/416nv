@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function() {
-    const description = d3.select("#chart-container").append("div")
+    const description = d3.select("#my_dataviz")
+        .append("div")
         .attr("id", "description")
         .style("text-align", "center")
         .style("font-size", "16px")
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const height = 600;
 
     const svg = d3.select("#my_dataviz")
+        .append("svg")
         .attr("width", width)
         .attr("height", height);
 
