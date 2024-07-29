@@ -8,27 +8,18 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const projection = d3.geoMercator()
         .scale(130)
+        .center([0, 20])
         .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
 
-    const temperatureData = await d3.csv("data/game.csv");
-    // const historicalData = await d3.csv("data/historical_temperatures.csv");
-    const temperatureMap = new Map(temperatureData.map(d => [d.country, +d.temperature_variation]));
-    // const historicalMap = new Map();
+    const data = await d3.csv("data/game.csv");
+    const temperatureMap = new Map(data.map(d => [d.CountryName, +d.Delta]));
 
-    historicalData.forEach(d => {
-        if (!historicalMap.has(d.country)) {
-            historicalMap.set(d.country, []);
-        }
-        historicalMap.get(d.country).push({ year: +d.year, temperature: +d.temperature });
-    });
+    const colorScale = d3.scaleSequential(d3.interpolateRdBu)
+        .domain([0, d3.max(data, d => +d.Delta)]); // Adjust the domain based on your data range
 
-    const color = d3.scaleSequential(d3.interpolateRdBu)
-        .domain([0, 50]); // Adjust the domain based on your data range
-
-    const world = await d3.json("data/world-110m.json");
-    const countries = topojson.feature(world, world.objects.countries).features;
+    const world = await d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
 
     const tooltip = d3.select("#tooltip");
 
@@ -51,38 +42,9 @@ document.addEventListener("DOMContentLoaded", async function() {
             .style("top", (event.pageY - 28) + "px");
         tooltip.select("#tooltip-country").text(country);
         tooltip.select("#tooltip-variation").text(variation);
-
-        const historicalTemps = historicalMap.get(country);
-        if (historicalTemps) {
-            const graphWidth = 200;
-            const graphHeight = 100;
-            const xScale = d3.scaleLinear()
-                .domain(d3.extent(historicalTemps, d => d.year))
-                .range([0, graphWidth]);
-            const yScale = d3.scaleLinear()
-                .domain(d3.extent(historicalTemps, d => d.temperature))
-                .range([graphHeight, 0]);
-
-            const line = d3.line()
-                .x(d => xScale(d.year))
-                .y(d => yScale(d.temperature));
-
-            const tooltipGraph = tooltip.select("#tooltip-graph").html("");
-
-            const svgGraph = tooltipGraph.append("svg")
-                .attr("width", graphWidth)
-                .attr("height", graphHeight);
-
-            svgGraph.append("path")
-                .datum(historicalTemps)
-                .attr("d", line)
-                .attr("fill", "none")
-                .attr("stroke", "steelblue")
-                .attr("stroke-width", 1.5);
-        }
     };
 
-    const mouseLeave = function(d) {
+    const mouseLeave = function() {
         d3.selectAll(".Country")
             .transition()
             .duration(200)
@@ -98,12 +60,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     svg.append("g")
         .selectAll("path")
-        .data(countries)
+        .data(world.features)
         .join("path")
         .attr("d", path)
         .attr("fill", d => {
             const tempVar = temperatureMap.get(d.properties.name);
-            return tempVar != null ? color(tempVar) : "#ccc";
+            return tempVar != null ? colorScale(tempVar) : "#ccc";
         })
         .attr("stroke", "transparent")
         .attr("class", "Country")
