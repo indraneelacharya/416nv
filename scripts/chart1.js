@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Load the data from the CSV file
     await d3.csv("data/temperatures_shrunk.csv", function(d) {
         const avgAnomaly = +d.Means;
-        data.push({year: +d.Year, avgAnomaly: avgAnomaly});
+        data.push({ year: +d.Year, avgAnomaly: avgAnomaly });
     });
 
     console.log("Data loaded:", data);
@@ -50,6 +50,30 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Y axis created");
 
+    // Calculate the line of best fit
+    const xMean = d3.mean(data, d => d.year);
+    const yMean = d3.mean(data, d => d.avgAnomaly);
+    const numerator = d3.sum(data, d => (d.year - xMean) * (d.avgAnomaly - yMean));
+    const denominator = d3.sum(data, d => (d.year - xMean) ** 2);
+    const slope = numerator / denominator;
+    const intercept = yMean - (slope * xMean);
+
+    const line = d3.line()
+        .x(d => x(d.year))
+        .y(d => y(slope * d.year + intercept));
+
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 1.5)
+        .attr("d", line);
+
+    // Tooltip
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     svg.append("g")
         .attr("stroke", "#000")
         .attr("stroke-opacity", 0.2)
@@ -59,7 +83,20 @@ document.addEventListener("DOMContentLoaded", async function() {
         .attr("cx", d => x(d.year))
         .attr("cy", d => y(d.avgAnomaly))
         .attr("fill", d => color(d.avgAnomaly))
-        .attr("r", d => Math.abs(2));
+        .attr("r", 4)
+        .on("mouseover", function(event, d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(`Year: ${d.year}<br>Avg Anomaly: ${d.avgAnomaly}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
 
     console.log("Data points plotted");
 });
