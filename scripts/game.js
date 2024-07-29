@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const temperatureMap = new Map(data.map(d => [d.CountryName, +d.Delta]));
 
     const colorScale = d3.scaleSequential(d3.interpolateRdBu)
-        .domain([0, d3.max(data, d => +d.Delta)]); // Adjust the domain based on your data range
+        .domain([d3.max(data, d => +d.Delta),0]); // Adjust the domain based on your data range
 
     const initialColor = "#d9f0d3"; // Very light green
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             .style("left", (event.pageX + 15) + "px")
             .style("top", (event.pageY - 28) + "px");
         tooltip.select("#tooltip-country").text(country);
-        tooltip.select("#tooltip-variation").text(variation);
+        // tooltip.select("#tooltip-variation").text(variation);
     };
 
     const mouseLeave = function() {
