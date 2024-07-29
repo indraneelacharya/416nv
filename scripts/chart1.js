@@ -104,10 +104,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .attr("stroke-opacity", 0.2);
 
             svg.append("foreignObject")
-                .attr("x", x(significant.year) + 5)
-                .attr("y", height - margin.bottom - 50)  // Adjust y position to appear lower on the graph
-                .attr("width", 80)
-                .attr("height", 50)
+                .attr("x", x(significant.year))
+                .attr("y", height - margin.bottom - 100)  // Adjust y position to appear lower on the graph
+                .attr("width", 300)
+                .attr("height", 100)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary}<br>Avg Anomaly: ${yearData.avgAnomaly}`)
@@ -116,7 +116,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
                 .style("border-radius", "4px")
-                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)");
+                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
+                .style("transform", "rotate(-90deg)")  // Rotate the tooltip
+                .style("transform-origin", "left top");
         }
     });
 
