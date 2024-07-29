@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .attr("stroke", "#000")
                 .attr("stroke-opacity", 0.2);
 
-            tooltip.append("div")
+            d3.select("body").append("div")
                 .attr("class", "permanent-tooltip")
                 .style("left", `${x(significant.year) + 5}px`)
                 .style("top", `${y(yearData.avgAnomaly) - 28}px`)
@@ -113,7 +113,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
                 .style("border-radius", "4px")
-                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)");
+                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
+                .style("opacity", 1);
         }
     });
 
