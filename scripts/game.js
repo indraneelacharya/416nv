@@ -1,12 +1,17 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    const description = d3.select("#chart-container").append("div")
+        .attr("id", "description")
+        .style("text-align", "center")
+        .style("font-size", "16px")
+        .style("margin-bottom", "10px")
+        .html("<b>Global Temperature Variation Game</b><br>This interactive map shows the temperature variations across different countries. Click on a country to see its temperature variation. The color will change to indicate the variation. Hover over a country for more details. Click on the country with the highest variation to end the game.");
+
     const width = 960;
     const height = 600;
 
     const svg = d3.select("#my_dataviz")
         .attr("width", width)
         .attr("height", height);
-
-    
 
     const projection = d3.geoMercator()
         .scale(130)
@@ -18,15 +23,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     const data = await d3.csv("data/game.csv");
     const temperatureMap = new Map(data.map(d => [d.CountryName, +d.Delta]));
 
-    const description = d3.select("#chart-container").append("div")
-        .attr("id", "description")
-        .style("text-align", "center")
-        .style("font-size", "16px")
-        .style("margin-bottom", "10px")
-        .html("<b>Global Temperature Variation Game</b><br>This interactive map shows the temperature variations across different countries. Click on a country to see its temperature variation. The color will change to indicate the variation. Hover over a country for more details. Click on country with highest varation to end the game.");
-
     const colorScale = d3.scaleSequential(d3.interpolateRdBu)
-        .domain([d3.max(data, d => +d.Delta),-2]); // Adjust the domain based on your data range
+        .domain([d3.max(data, d => +d.Delta), -2]); // Adjust the domain based on your data range
 
     const initialColor = "#487748"; // Very green
 
