@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary}<br>Mean Sea Level: ${yearData.meanSeaLevel}`)
-                .style("font-size", "12px")
+                .style("font-size", "9px")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
