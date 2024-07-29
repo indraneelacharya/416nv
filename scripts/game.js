@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     const colorScale = d3.scaleSequential(d3.interpolateRdBu)
         .domain([0, d3.max(data, d => +d.Delta)]); // Adjust the domain based on your data range
 
+    const initialColor = "#d9f0d3"; // Very light green
+
     const world = await d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson");
 
     const tooltip = d3.select("#tooltip");
@@ -63,18 +65,23 @@ document.addEventListener("DOMContentLoaded", async function() {
         .data(world.features)
         .join("path")
         .attr("d", path)
-        .attr("fill", d => {
-            const tempVar = temperatureMap.get(d.properties.name);
-            return tempVar != null ? colorScale(tempVar) : "#ccc";
-        })
+        .attr("fill", initialColor)
         .attr("stroke", "transparent")
         .attr("class", "Country")
         .style("opacity", 0.8)
         .on("mouseover", mouseOver)
         .on("mouseleave", mouseLeave)
         .on("click", function(event, d) {
-            if (d.properties.name === "Greenland") {
-                alert("Game Over! You hovered over Greenland.");
+            const country = d.properties.name;
+            const tempVar = temperatureMap.get(country);
+
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", tempVar != null ? colorScale(tempVar) : initialColor);
+
+            if (country === "Greenland") {
+                alert("Game Over! You clicked on Greenland.");
             }
         });
 
