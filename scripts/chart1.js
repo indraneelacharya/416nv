@@ -103,20 +103,20 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .attr("stroke", "#000")
                 .attr("stroke-opacity", 0.2);
 
-            d3.select("body").append("div")
+            svg.append("foreignObject")
+                .attr("x", x(significant.year) + 5)
+                .attr("y", y(yearData.avgAnomaly) - 28)
+                .attr("width", 200)
+                .attr("height", 50)
+                .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
-                .style("left", `${x(significant.year) + 5}px`)
-                .style("top", `${y(yearData.avgAnomaly) - 28}px`)
                 .html(`Year: ${significant.year}<br>${significant.summary}<br>Avg Anomaly: ${yearData.avgAnomaly}`)
-                .style("position", "absolute")
+                .style("font-size", "12px")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
                 .style("border-radius", "4px")
-                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
-                .style("opacity", 1)
-                .style("font-size", "12px")
-                .style("z-index", -1); // Ensure permanent tooltips are behind the graphs
+                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)");
         }
     });
 
