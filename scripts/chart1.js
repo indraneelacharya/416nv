@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const significantYears = [
         { year: 1856, summary: "Eunice Newton Foote hypothesizes Greenhouse Effect." },
-        { year: 1958, summary: "Charles Keeling starts CO2 measurements at Mauna Loa." },
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
         { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
         { year: 1998, summary: "Michael Mann publishes 'hockey stick' climate graph." }
@@ -73,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     svg.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "red")
+        .attr("stroke", "black")
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
@@ -106,8 +105,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             svg.append("foreignObject")
                 .attr("x", x(significant.year))
                 .attr("y", 250)  // Adjust y position to appear lower on the graph
-                .attr("width", 80)
-                .attr("height", 100)
+                .attr("width", 60)
+                .attr("height", 150)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary} Avg Anomaly: ${yearData.avgAnomaly}`)
