@@ -18,9 +18,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         .style("margin-bottom", "10px")
         .html("<b>CO2 Emissions Over Time</b><br>This chart highlights the mean CO2 levels in the atmosphere from 1950 to present, showing the increase in CO2 concentrations over time.");
 
-    // ... rest of the code remains the same
-});
-
 
     const significantYears = [
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
