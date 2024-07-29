@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     console.log("Data loaded:", data);
 
     const significantYears = [
+        { year: 1958, summary: "Charles Keeling starts CO2 measurements at Mauna Loa." },
         { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
         { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
         { year: 1998, summary: "Michael Mann publishes 'hockey stick' climate graph." }
@@ -58,24 +59,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Y axis created");
 
-    const xMean = d3.mean(data, d => d.year);
-    const yMean = d3.mean(data, d => d.mean);
-    const numerator = d3.sum(data, d => (d.year - xMean) * (d.mean - yMean));
-    const denominator = d3.sum(data, d => (d.year - xMean) ** 2);
-    const slope = numerator / denominator;
-    const intercept = yMean - (slope * xMean);
-
-    const line = d3.line()
-        .x(d => x(d.year))
-        .y(d => y(slope * d.year + intercept));
-
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("stroke-width", 1.5)
-        .attr("d", line);
-
     const triangle = d3.symbol().type(d3.symbolTriangle).size(50);
     const r = d => d.delta >= 0 ? 0 : 180;
 
@@ -107,21 +90,41 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             svg.append("foreignObject")
                 .attr("x", x(significant.year))
-                .attr("y", 100)  // Adjust y position to appear lower on the graph
+                .attr("y", 250)  // Adjust y position to appear lower on the graph
                 .attr("width", 80)
                 .attr("height", 100)
                 .append("xhtml:div")
                 .attr("class", "permanent-tooltip")
                 .html(`Year: ${significant.year}<br>${significant.summary}<br>Mean CO2 Level: ${yearData.mean}`)
-                .style("font-size", "9px")
+                .style("font-size", "12px")
                 .style("background", "white")
                 .style("border", "1px solid #ccc")
                 .style("padding", "8px")
                 .style("border-radius", "4px")
                 .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
+                .style("transform", "rotate(-90deg)")  // Rotate the tooltip
                 .style("transform-origin", "left top");
         }
     });
+
+    // Calculate the line of best fit
+    const xMean = d3.mean(data, d => d.year);
+    const yMean = d3.mean(data, d => d.mean);
+    const numerator = d3.sum(data, d => (d.year - xMean) * (d.mean - yMean));
+    const denominator = d3.sum(data, d => (d.year - xMean) ** 2);
+    const slope = numerator / denominator;
+    const intercept = yMean - (slope * xMean);
+
+    const line = d3.line()
+        .x(d => x(d.year))
+        .y(d => y(slope * d.year + intercept));
+
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 1.5)
+        .attr("d", line);
 
     svg.append("g")
         .attr("stroke", "#000")
