@@ -103,7 +103,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 .style("padding", "8px")
                 .style("border-radius", "4px")
                 .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)")
-                .style("transform", "rotate(-90deg)")  // Rotate the tooltip
                 .style("transform-origin", "left top");
         }
     });
