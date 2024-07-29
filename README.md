@@ -1,1 +1,1 @@
-Final project for CS416 at UIUC.
+CS416 Narrative Visualization
