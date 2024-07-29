@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    const description = d3.select("#chart-container").append("div")
+        .attr("id", "description")
+        .style("text-align", "center")
+        .style("font-size", "16px")
+        .style("margin-bottom", "10px")
+        .html("<b>Global Temperature Variation Game</b><br>This interactive map shows the temperature variations across different countries. Click on a country to see its temperature variation. The color will change to indicate the variation. Hover over a country for more details. Click on the country with highest varation.");
+
     const width = 960;
     const height = 600;
 
@@ -85,5 +92,4 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
         });
 
-    console.log("Map plotted");
-});
+    console.log("M
