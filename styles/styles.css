@@ -48,7 +48,6 @@ button {
 
 #tooltip-graph {
     margin-top: 10px;
-}
 .tooltip, .permanent-tooltip {
     position: absolute;
     text-align: left;
@@ -60,6 +59,14 @@ button {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
     font-size: 14px;
 }
+.tooltip {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.permanent-tooltip {
+    opacity: 1;
+}
+
 .tooltip {
     opacity: 0;
     transition: opacity 0.5s;
