@@ -9,6 +9,14 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     console.log("Data loaded:", data);
 
+    const significantYears = [
+        { year: 1856, summary: "Eunice Newton Foote hypothesizes Greenhouse Effect." },
+        { year: 1958, summary: "Charles Keeling starts CO2 measurements at Mauna Loa." },
+        { year: 1969, summary: "First coupled ocean-atmosphere general circulation model." },
+        { year: 1985, summary: "NOAA deploys TAO buoy array for ENSO predictions." },
+        { year: 1998, summary: "Michael Mann publishes 'hockey stick' climate graph." }
+    ];
+
     const width = 960;
     const height = 500;
     const margin = { top: 20, right: 30, bottom: 30, left: 40 };
@@ -73,6 +81,33 @@ document.addEventListener("DOMContentLoaded", async function() {
     const tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
+
+    // Draw significant year lines and permanent tooltips
+    significantYears.forEach(significant => {
+        const yearData = data.find(d => d.year === significant.year);
+        if (yearData) {
+            svg.append("line")
+                .attr("x1", x(significant.year))
+                .attr("x2", x(significant.year))
+                .attr("y1", margin.top)
+                .attr("y2", height - margin.bottom)
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "4");
+
+            tooltip.append("div")
+                .attr("class", "permanent-tooltip")
+                .style("left", `${x(significant.year) + 5}px`)
+                .style("top", `${y(yearData.avgAnomaly) - 28}px`)
+                .html(`Year: ${significant.year}<br>${significant.summary}`)
+                .style("position", "absolute")
+                .style("background", "white")
+                .style("border", "1px solid #ccc")
+                .style("padding", "8px")
+                .style("border-radius", "4px")
+                .style("box-shadow", "0px 0px 5px rgba(0, 0, 0, 0.3)");
+        }
+    });
 
     svg.append("g")
         .attr("stroke", "#000")
