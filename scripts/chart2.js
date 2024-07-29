@@ -58,7 +58,25 @@ document.addEventListener("DOMContentLoaded", async function() {
         .call(g => g.select(".domain").remove());
 
     console.log("Y axis created");
+    
+    const xMean = d3.mean(data, d => d.year);
+    const yMean = d3.mean(data, d => d.MeanSeaLevel);
+    const numerator = d3.sum(data, d => (d.year - xMean) * (d.MeanSeaLevel - yMean));
+    const denominator = d3.sum(data, d => (d.year - xMean) ** 2);
+    const slope = numerator / denominator;
+    const intercept = yMean - (slope * xMean);
 
+    const line = d3.line()
+        .x(d => x(d.year))
+        .y(d => y(slope * d.year + intercept));
+
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1.5)
+        .attr("d", line);
+    
     const triangle = d3.symbol().type(d3.symbolTriangle).size(50);
     const r = d => d.delta >= 0 ? 0 : 180;
 
